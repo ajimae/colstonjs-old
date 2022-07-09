@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "lib": ["ESNext"],
+    "module": "esnext",
+    "target": "esnext",
+    // "bun-types" is the important part
+    "moduleResolution": "node",
+    "types": ["bun-types"],
+    "baseUrl": ".",
+    "paths": {
+      "jade": [
+        "./jade/jade.ts"
+      ]
+    }
+  }
+}

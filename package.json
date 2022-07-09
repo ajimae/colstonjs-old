@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "bun-types": "^0.1.2",
+    "radix3": "^0.1.2"
+  }
+}
