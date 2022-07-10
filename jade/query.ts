@@ -1,4 +1,4 @@
-function parse(url: string): object {
+function queryParse(url: string): Record<string, string> {
   const results = url.match(/\?(?<query>.*)/);
 
   if (!results) {
@@ -14,4 +14,4 @@ function parse(url: string): object {
   }, {});
 }
 
-export default parse;
+export default queryParse;
