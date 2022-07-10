@@ -1,5 +1,4 @@
-import Jade from "jade";
-import { data as _data } from "./data" // dummy data
+import Jade, { ResponseHelper } from "./jade";
 
 /**
  * TODO:
@@ -15,47 +14,47 @@ import { data as _data } from "./data" // dummy data
  * 4. strip out radix3 and ufo for custom
  * router table and parser
  */
-const server = new Jade();
+const server: Jade = new Jade();
 
-server.use('/ping', function (request: Request): Response {
+server.get('/', function (ctx: ResponseHelper): Response {
+  return ctx.status(200).json({ data: { message: "playing around with bunjs..." } });
+});
+
+server.get('/ping', function (ctx: ResponseHelper): Response {
+  return ctx.status(200).json({ data: { message: "pong" } });
+});
+
+server.get('/name/:name', function (ctx: ResponseHelper): Response {
   return Response.json({
-    status: 200,
-    statusText: "OK",
     data: {
-      message: "pong"
+      params: ctx.request.params
     }
   })
 });
 
-server.use('/name/:name', function (request: Request): Response {
+server.use(function (request) {
+  const { host, pathname } = new URL(request.url);
+  console.info("::" + host.split(":")[1] + " - - ", [new Date()], " - - " + request.method + " " + pathname + " HTTP 1.1");
+})
+
+server.get('/?:name&age', function (ctx): Response {
   return Response.json({
-    status: 200,
-    statusText: "OK",
     data: {
-      name: request.params.name
+      query: ctx.request.query
     }
   })
 });
 
-server.use('/?:name&age', function (request: Request): Response {
-  return Response.json({
-    status: 200,
-    statusText: "OK",
-    data: {
-      name: ''
-    }
-  })
-});
+// server.use('/', async function (_: Request) {
+//   // perform some actions here and return a response
+//   const data = await Promise.resolve(_data);
+//   return Response.json({
+//     status: 200,
+//     statusText: 'OK',
+//     data
+//   })
+// });
 
-server.use('/', async function (_: Request) {
-  // perform some actions here and return a response
-  const data = await Promise.resolve(_data);
-  return Response.json({
-    status: 200,
-    statusText: 'OK',
-    data
-  })
-});
 
 /**
  * @description
