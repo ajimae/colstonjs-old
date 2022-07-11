@@ -1,7 +1,7 @@
-export default function readBody(request: Request, encoding?: string): any {
+export default function readBody(request: Request, encoding?: string): Promise<JSON | string> {
   if (encoding == "text") {
-    return request.text()
+    return request.text();
   }
 
-  return request.json
+  return request.json()
 }

@@ -1,5 +1,14 @@
 {
+  "name": "jade",
+  "version": "0.0.1",
   "dependencies": {
     "bun-types": "^0.1.2"
-  }
+  },
+  "files": [
+    "jade/*",
+    "index.ts",
+    "package.json",
+    "README.md",
+    "bun.lockb"
+  ]
 }
