@@ -1,15 +1,15 @@
 export default class Context {
   code: number;
-  request: Request;
+  request: Request | any;
   response: Response | null;
   readonly url: string;
   readonly path: string;
   readonly host: string;
   readonly method: string;
   readonly headers: Request["headers"];
+  readonly locals: Record<any, any> = {};
 
   constructor(request: Request) {
-    console.log(request.method, '>?>')
     this.request = request;
     this.url = request.url;
     this.method = request.method;
@@ -27,7 +27,7 @@ export default class Context {
    * @param raw 
    * @returns 
    */
-  private raw(raw: Response) {
+  private raw(raw: Response): Response {
     return raw;
   }
 
@@ -35,27 +35,24 @@ export default class Context {
   //   new Response(data, options);
   // }
 
-  public head(options: ResponseInit = { headers: {} }): Response {
+  public head(options: ResponseInit = { headers: { ...this.headers } }): Response {
     options.status = 204;
     options.statusText = "No Content";
     return new Response(null, options);
-    // return this;
   }
 
-  public json(json: { [key: string]: any }, options: ResponseInit = { headers: {} }) {
+  public json(json: { [key: string]: any }, options: ResponseInit = { headers: { ...this.headers } }): Response {
     options.headers["Content-Type"] = "application/json";
     options.status = this.code || options.status;
     options.statusText = options.statusText || "OK";
     return new Response(JSON.stringify(json), options);
-    // return this;
   }
 
-  public text(text: string, options: ResponseInit = { headers: {} }) {
+  public text(text: string, options: ResponseInit = { headers: { ...this.headers } }): Response {
     options.headers["Content-Type"] = "text/plain";
     options.status = this.code || options.status;
     options.statusText = options.statusText || "OK";
     return new Response(text.toString(), options);
-    // return this;
   }
 }
 

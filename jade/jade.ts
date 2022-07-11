@@ -1,10 +1,11 @@
 import { Errorlike, Serve, Server } from "bun";
-import type { Options } from "./jade.d";
+import type { Middleware, Options } from "./jade.d";
 import parse from "./params";
 import queryParse from "./query";
 import readBody from "./body";
 import Context from "./context";
 import routeRegister from "./routeRegister";
+import compose from "./middlewares";
 
 /**
  * @class Jade
@@ -61,8 +62,8 @@ export default class Jade {
    * @param path
    * @returns void
    */
-  public get(path: string, cb?: Function): Response | string | Promise<Response> {
-    if (!cb)
+  public get(path: string, ...cb: Array<Middleware<Context>>): string | Response {
+    if (!cb.length)
       return this.cache.get(path);
     routeRegister(path, "GET", cb, this.routeTable);
   }
@@ -72,22 +73,22 @@ export default class Jade {
    * @param path 
    * @param cb 
    */
-  public post(path, cb) {
+  public post(path: string, ...cb: Array<Middleware<Context>>): void {
     routeRegister(path, "POST", cb, this.routeTable);
   }
 
-  public patch(path, cb) {
+  public patch(path: string, ...cb: Array<Middleware<Context>>): void {
     routeRegister(path, "PATCH", cb, this.routeTable);
   }
 
-  public put(path, cb) {
+  public put(path: string, ...cb: Array<Middleware<Context>>): void {
     routeRegister(path, "PUT", cb, this.routeTable)
   }
 
   /**
    *
    */
-  public delete(path, cb) {
+  public delete(path: string, ...cb: Array<Middleware<Context>>): void {
     routeRegister(path, "DELETE", cb, this.routeTable)
   }
 
@@ -96,7 +97,7 @@ export default class Jade {
    * @param {string} path 
    * @param {Function} handler 
    */
-  public use(...cb: Array<(request: Request) => Response | Promise<Response> | void>): void {
+  public use(...cb: Array<(ctx: Context) => Response | Promise<Response> | void>): void {
     this.middleware.push(...cb);
   }
 
@@ -106,10 +107,13 @@ export default class Jade {
    * @returns {Response} bun response object
    */
   private async fetch(request: Request): Promise<Response> {
-    // invoke all app level middlewares
+    const context = new Context(request);
+    /**
+     * invoke all app level middlewares
+     */
     this.middleware.forEach((cb, _) => {
       if (typeof cb == "function") {
-        cb(request);
+        cb(context);
       }
     });
 
@@ -130,15 +134,19 @@ export default class Jade {
         new RegExp(parsedRoute).test(request.url) &&
         this.routeTable[route][request.method.toLowerCase()]
       ) {
-        let cb = this.routeTable[route][request.method.toLowerCase()];
+        const middleware = this.routeTable[route][request.method.toLowerCase()];
         const m = request.url.match(new RegExp(parsedRoute));
+
+        const cb = middleware.pop();
 
         request.params = m.groups;
         request.query = queryParse(request.url);
         request.body = readBody(request);
 
         exists = true;
-        return cb(new Context(request)) as Response;
+        compose(context, middleware);
+
+        return cb(context) as Response;
       }
     }
 
