@@ -21,7 +21,14 @@ function parse(url: string): string {
     }
   }
 
-  return str;
+  /** 
+   * TODO:
+   * fix issue with route not matching exact value 
+   * pops the "$" used to match end of pathname
+  */
+  if (str.indexOf("&") > -1)
+    return str;
+  return str + "$";
 }
 
 export default parse;

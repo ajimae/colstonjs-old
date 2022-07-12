@@ -1,4 +1,4 @@
-import Jade from "jade";
+import Jade from "./jade/jade";
 
 export default Jade;
 export type {

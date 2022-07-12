@@ -1,6 +1,6 @@
 import Context from "./context";
 import { methods } from "./methods";
-import type { Middleware } from "./jade.d";
+import type { Middleware } from "./jade";
 
 export default function register(path: string, method: string, callback: Array<Middleware<Context>>, routeTable: object = {}): void | never {
   routeTable[path] = validate(path, method, callback);

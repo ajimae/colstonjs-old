@@ -1,4 +1,4 @@
-import Jade, { Context } from ".";
+import Jade, { type Context } from ".";
 
 const server: Jade = new Jade();
 
@@ -27,10 +27,12 @@ server.get('/name/:name', function (ctx: Context): Response {
   })
 });
 
+// server.post('/age', function (ctx, next) { server.set('name', 'meeky'); next() }, function (ctx) { return ctx.status(200).json({ n: 1 }) }).post('/name', (ctx) => ctx.json({ n: 2 })).get('/age', (ctx) => { console.log(server.get('name')); return ctx.json({}) });
+
 function logger(ctx: Context) {
   const { host, pathname } = new URL(ctx.url);
   const id = ctx.request.id;
-  console.info("::" + host.split(":")[1] + " - - ", [new Date()], " - - " + ctx.request.method + " " + pathname + " HTTP 1.1" + " - " + "id: " + ctx.request.id);
+  console.info("::" + host.split(":")[1] + " - - ", [new Date()], " - - " + ctx.request.method + " " + pathname + " HTTP 1.1" + " - " + "id: " + id);
 }
 
 server.use(function (ctx: Context) {

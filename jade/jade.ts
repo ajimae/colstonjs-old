@@ -1,5 +1,5 @@
 import { Errorlike, Serve, Server } from "bun";
-import type { Middleware, Options } from "./jade.d";
+import type { Middleware, Options, IJade } from "./jade.d";
 import parse from "./params";
 import queryParse from "./query";
 import readBody from "./body";
@@ -13,11 +13,11 @@ import compose from "./middlewares";
  * @method use
  * @method fetch
  */
-export default class Jade {
-  private readonly options: Options = {};
-  private readonly routeTable: object = {};
-  private readonly middleware: Array<Function> = [];
-  private readonly cache: Map<string, any> = new Map();
+export default class Jade implements IJade {
+  readonly options: Options = {};
+  readonly routeTable: object = {};
+  readonly middleware: Array<Function> = [];
+  readonly cache = new Map<string, any>();
 
   /**
    * @description overloaded constructor
@@ -32,7 +32,7 @@ export default class Jade {
    * @param error
    * @returns response
    */
-  private error(error: Errorlike): Response | undefined | Promise<Response | undefined> {
+  error(error: Errorlike): Response | undefined | Promise<Response | undefined> {
     console.error(error);
     return new Response(JSON.stringify(
       new Error(error.message || "An error occurred")
@@ -44,7 +44,7 @@ export default class Jade {
    * @param key 
    * @param value 
    */
-  public set(key: string, value: any) {
+  public set(key: string, value: any): void {
     this.cache.set(key, value)
   }
 
@@ -58,38 +58,58 @@ export default class Jade {
   }
 
   /**
-   * 
+   * @description overloaded get method
    * @param path
    * @returns void
    */
-  public get(path: string, ...cb: Array<Middleware<Context>>): string | Response {
+  public get(path: string): string;
+  public get(path: string, ...cb: Array<Middleware<Context>>): Jade;
+  public get(path: string, ...cb: Array<Middleware<Context>>): any {
     if (!cb.length)
       return this.cache.get(path);
     routeRegister(path, "GET", cb, this.routeTable);
+    return this;
   }
 
   /**
-   * 
+   * @description HTTP POST method
    * @param path 
    * @param cb 
+   * @returns {this} 
    */
-  public post(path: string, ...cb: Array<Middleware<Context>>): void {
+  public post(path: string, ...cb: Array<Middleware<Context>>): Jade {
     routeRegister(path, "POST", cb, this.routeTable);
+    return this;
   }
 
-  public patch(path: string, ...cb: Array<Middleware<Context>>): void {
+  /**
+   * @description HTTP PATCH method
+   * @param path 
+   * @param cb 
+   * @returns {this} 
+   */
+  public patch(path: string, ...cb: Array<Middleware<Context>>): Jade {
     routeRegister(path, "PATCH", cb, this.routeTable);
+    return this;
   }
 
-  public put(path: string, ...cb: Array<Middleware<Context>>): void {
-    routeRegister(path, "PUT", cb, this.routeTable)
+  /**
+   * @description HTTP PUT method
+   * @param path 
+   * @param cb 
+   * @returns {this} 
+   */
+  public put(path: string, ...cb: Array<Middleware<Context>>): Jade {
+    routeRegister(path, "PUT", cb, this.routeTable);
+    return this;
   }
 
   /**
    *
    */
-  public delete(path: string, ...cb: Array<Middleware<Context>>): void {
+  public delete(path: string, ...cb: Array<Middleware<Context>>): Jade {
     routeRegister(path, "DELETE", cb, this.routeTable)
+    return this;
   }
 
   /**
@@ -106,7 +126,7 @@ export default class Jade {
    * @param {Request} request bun request object
    * @returns {Response} bun response object
    */
-  private async fetch(request: Request): Promise<Response> {
+  async fetch(request: Request): Promise<Response> {
     const context = new Context(request);
     /**
      * invoke all app level middlewares
@@ -128,7 +148,7 @@ export default class Jade {
 
     for (let i = 0; i < routes.length; i++) {
       const route = routes[i];
-      const parsedRoute = parse(route);
+      let parsedRoute = parse(route);
 
       if (
         new RegExp(parsedRoute).test(request.url) &&
@@ -137,7 +157,8 @@ export default class Jade {
         const middleware = this.routeTable[route][request.method.toLowerCase()];
         const m = request.url.match(new RegExp(parsedRoute));
 
-        const cb = middleware.pop();
+        const _middleware = middleware.slice();
+        const cb = _middleware.pop();
 
         request.params = m.groups;
         request.query = queryParse(request.url);
