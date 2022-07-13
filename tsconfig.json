@@ -8,8 +8,8 @@
     "types": ["bun-types"],
     "baseUrl": ".",
     "paths": {
-      "jade": [
-        "./jade/jade.ts"
+      "colston": [
+        "src/colston.ts"
       ]
     }
   }
