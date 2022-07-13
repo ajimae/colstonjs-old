@@ -31,10 +31,6 @@ export default class Context {
     return raw;
   }
 
-  // private _response(data: any, options) {
-  //   new Response(data, options);
-  // }
-
   public head(options: ResponseInit = { headers: { ...this.headers } }): Response {
     options.status = 204;
     options.statusText = "No Content";

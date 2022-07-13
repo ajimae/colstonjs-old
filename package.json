@@ -1,14 +1,24 @@
 {
-  "name": "jade",
+  "name": "colstonjs",
   "version": "0.0.1",
   "dependencies": {
     "bun-types": "^0.1.2"
   },
   "files": [
-    "jade/*",
+    "src/*",
     "index.ts",
     "package.json",
     "README.md",
-    "bun.lockb"
-  ]
+    "bun.lockb",
+    "tsconfig.json"
+  ],
+  "description": "fast, lightweight and zero dependency framework for bunjs",
+  "main": "index.ts",
+  "repository": "https://github.com/ajimae/colston.git",
+  "author": "Chukwuemeka Ajima <meeky.ae@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "devDependencies": {
+    "@types/node": "^18.0.3"
+  }
 }
