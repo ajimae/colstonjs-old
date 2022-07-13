@@ -13,37 +13,49 @@ export declare type Options = {
     hostname?: string;
 };
 
+export type MethodType =
+    | 'GET'
+    | 'HEAD'
+    | 'POST'
+    | 'PUT'
+    | 'PATCH'
+    | 'DELETE'
+    | 'CONNECT'
+    | 'OPTIONS'
+    | 'TRACE'
+
 export declare type Context = _Context;
-export interface IJade {
+export interface IColston {
     readonly options: Options;
     readonly routeTable: object;
     readonly middleware: Array<Function>;
-    readonly cache: any;
+    readonly cache: Map<string, any>;
     use(...cb: Array<(ctx: Context) => Response | Promise<Response> | void>): void;
     error(error: Errorlike): Response | undefined | Promise<Response | undefined>;
     set(key: string, value: any): void;
-    get(key: string): string;
-    get(path: string, ...cb: Array<Middleware<Context>>): string | Response | Jade;
-    post(path: string, ...cb: Array<Middleware<Context>>): Jade;
-    patch(path: string, ...cb: Array<Middleware<Context>>): Jade;
-    put(path: string, ...cb: Array<Middleware<Context>>): Jade;
-    delete(path: string, ...cb: Array<Middleware<Context>>): Jade;
+    get(key: string): number
+    get(path: string): string;
+    get(path: string, ...cb: Array<Middleware<Context>>): Response | Colston;
+    post(path: string, ...cb: Array<Middleware<Context>>): Colston;
+    patch(path: string, ...cb: Array<Middleware<Context>>): Colston;
+    put(path: string, ...cb: Array<Middleware<Context>>): Colston;
+    delete(path: string, ...cb: Array<Middleware<Context>>): Colston;
     fetch(request: Request): Promise<Response>;
     start(port?: number, cb?: Function): Server;
 }
 export declare type Next = () => Promise<void> | void;
-export declare type Middleware<T> = (context: T, next?: Next) => Response | void;
+export declare type Middleware<T> = (context: T, next?: Next) => Response | void | Promise<Response | void>;
 /**
  * @class Jade
  * @description add route to routeTable, match and process request
  * @method use
  * @method fetch
  */
-export default class Jade implements IJade {
+export default class Colston implements IColston {
     readonly options: Options;
     readonly routeTable: object;
     readonly middleware: Array<Function>;
-    readonly cache: any;
+    readonly cache: Map<string, any>;
     /**
      * @description overloaded constructor
      * @param {object} options
@@ -66,39 +78,41 @@ export default class Jade implements IJade {
      * @param {string} key
      * @return {boolean} true | false
      */
-    has(key: string): any;
+    has(key: string): boolean;
     /**
      * @description overloaded get method
      * @param path
      * @returns void
      */
+
+    get(path: string): number
     get(path: string): string;
-    get(path: string, ...cb: Array<Middleware<Context>>): Jade;
+    get(path: string, ...cb: Array<Middleware<Context>>): Colston;
     /**
      * @description HTTP POST method
      * @param path
      * @param cb
      * @returns {this}
      */
-    post(path: string, ...cb: Array<Middleware<Context>>): Jade;
+    post(path: string, ...cb: Array<Middleware<Context>>): Colston;
     /**
      * @description HTTP PATCH method
      * @param path
      * @param cb
      * @returns {this}
      */
-    patch(path: string, ...cb: Array<Middleware<Context>>): Jade;
+    patch(path: string, ...cb: Array<Middleware<Context>>): Colston;
     /**
      * @description HTTP PUT method
      * @param path
      * @param cb
      * @returns {this}
      */
-    put(path: string, ...cb: Array<Middleware<Context>>): Jade;
+    put(path: string, ...cb: Array<Middleware<Context>>): Colston;
     /**
      *
      */
-    delete(path: string, ...cb: Array<Middleware<Context>>): Jade;
+    delete(path: string, ...cb: Array<Middleware<Context>>): Colston;
     /**
      * @description add level route
      * @param {string} path

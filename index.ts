@@ -1,8 +1,8 @@
-import Jade from "./jade/jade";
+import Jade from "./src/colston";
 
 export default Jade;
 export type {
   Next,
   Context,
   Middleware
-} from "./jade/jade.d";
+} from "./src/colston.d";

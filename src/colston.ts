@@ -1,5 +1,5 @@
 import { Errorlike, Serve, Server } from "bun";
-import type { Middleware, Options, IJade } from "./jade.d";
+import type { Middleware, Options, IColston} from "./colston.d";
 import parse from "./params";
 import queryParse from "./query";
 import readBody from "./body";
@@ -13,7 +13,7 @@ import compose from "./middlewares";
  * @method use
  * @method fetch
  */
-export default class Jade implements IJade {
+export default class Colston implements IColston {
   readonly options: Options = {};
   readonly routeTable: object = {};
   readonly middleware: Array<Function> = [];
@@ -32,10 +32,10 @@ export default class Jade implements IJade {
    * @param error
    * @returns response
    */
-  error(error: Errorlike): Response | undefined | Promise<Response | undefined> {
+  public error(error: Errorlike): Response | undefined | Promise<Response | undefined> {
     console.error(error);
     return new Response(JSON.stringify(
-      new Error(error.message || "An error occurred")
+      new Error(error.message || "An error occurred", error)
     ), { status: 500 });
   }
 
@@ -53,7 +53,7 @@ export default class Jade implements IJade {
    * @param {string} key
    * @return {boolean} true | false
    */
-  public has(key: string) {
+  public has(key: string): boolean {
     return this.cache.has(key);
   }
 
@@ -62,8 +62,9 @@ export default class Jade implements IJade {
    * @param path
    * @returns void
    */
-  public get(path: string): string;
-  public get(path: string, ...cb: Array<Middleware<Context>>): Jade;
+  public get(key: string): number
+  public get(key: string): string;
+  public get(path: string, ...cb: Array<Middleware<Context>>): Colston;
   public get(path: string, ...cb: Array<Middleware<Context>>): any {
     if (!cb.length)
       return this.cache.get(path);
@@ -77,7 +78,7 @@ export default class Jade implements IJade {
    * @param cb 
    * @returns {this} 
    */
-  public post(path: string, ...cb: Array<Middleware<Context>>): Jade {
+  public post(path: string, ...cb: Array<Middleware<Context>>): Colston {
     routeRegister(path, "POST", cb, this.routeTable);
     return this;
   }
@@ -88,7 +89,7 @@ export default class Jade implements IJade {
    * @param cb 
    * @returns {this} 
    */
-  public patch(path: string, ...cb: Array<Middleware<Context>>): Jade {
+  public patch(path: string, ...cb: Array<Middleware<Context>>): Colston {
     routeRegister(path, "PATCH", cb, this.routeTable);
     return this;
   }
@@ -99,7 +100,7 @@ export default class Jade implements IJade {
    * @param cb 
    * @returns {this} 
    */
-  public put(path: string, ...cb: Array<Middleware<Context>>): Jade {
+  public put(path: string, ...cb: Array<Middleware<Context>>): Colston {
     routeRegister(path, "PUT", cb, this.routeTable);
     return this;
   }
@@ -107,7 +108,7 @@ export default class Jade implements IJade {
   /**
    *
    */
-  public delete(path: string, ...cb: Array<Middleware<Context>>): Jade {
+  public delete(path: string, ...cb: Array<Middleware<Context>>): Colston {
     routeRegister(path, "DELETE", cb, this.routeTable)
     return this;
   }
@@ -150,6 +151,8 @@ export default class Jade implements IJade {
       const route = routes[i];
       let parsedRoute = parse(route);
 
+      console.log(new RegExp(parsedRoute).test(request.url), parsedRoute, ":::::", request.url)
+
       if (
         new RegExp(parsedRoute).test(request.url) &&
         this.routeTable[route][request.method.toLowerCase()]
@@ -185,7 +188,7 @@ export default class Jade implements IJade {
    */
   public start(port?: number, cb?: Function): Server {
     const self = this;
-    if (typeof cb == "function") cb.call(this);
+    if (typeof cb == "function") cb(this);
     return Bun.serve({
       fetch: self.fetch.bind(self),
       port: port || self.options?.port,
