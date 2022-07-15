@@ -1,6 +1,6 @@
 {
   "name": "colstonjs",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "dependencies": {
     "bun-types": "^0.1.2"
   },
