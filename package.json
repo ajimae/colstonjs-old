@@ -10,7 +10,19 @@
     "package.json",
     "README.md",
     "bun.lockb",
-    "tsconfig.json"
+    "tsconfig.json",
+    "LICENSE.md"
+  ],
+  "keywords": [
+    "bun",
+    "bunjs",
+    "colston",
+    "colstonjs",
+    "api",
+    "web",
+    "http",
+    "server",
+    "framework"
   ],
   "description": "fast, lightweight and zero dependency framework for bunjs",
   "main": "index.ts",

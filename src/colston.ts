@@ -151,8 +151,6 @@ export default class Colston implements IColston {
       const route = routes[i];
       let parsedRoute = parse(route);
 
-      console.log(new RegExp(parsedRoute).test(request.url), parsedRoute, ":::::", request.url)
-
       if (
         new RegExp(parsedRoute).test(request.url) &&
         this.routeTable[route][request.method.toLowerCase()]

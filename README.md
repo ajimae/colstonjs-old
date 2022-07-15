@@ -1,6 +1,6 @@
 # 🍥 Colston.js
 
-fast, lightweight and zero dependency framework for [bunjs](https://bun.sh) 🚀
+Fast, lightweight and zero dependency framework for [bunjs](https://bun.sh) 🚀
 
 ![npm](https://img.shields.io/npm/v/colstonjs?color=blue&style=plastic)
 ![NPM](https://img.shields.io/npm/l/colstonjs?style=plastic)
@@ -22,8 +22,10 @@ fast, lightweight and zero dependency framework for [bunjs](https://bun.sh) 🚀
     - [Route-Level Middleware](#route-level-middleware)
 - [Application instance cache](#application-instance-cache)
 - [Error Handler](#error-handler)
-- [Contribute](#contribute-🧑‍💻)
-- [License](#license-🔐)
+- [Contribute](#contribute)
+- [License](#license)
+- [Author](#author)
+- [Note](#note)
 
 ## Background
 
@@ -34,6 +36,8 @@ Bun is written in a low-level manual memory management programming language call
 
 Bun supports ~90% of the native nodejs APIs including `fs`, `path`etc and also distribute it's packages uses [npm](https://npmjs.com) hence both `yarn` and `npm` are supported in bun.
 
+Colstonjs is a fast, minimal and higly configurable typescript based api `framework` highly inspired by [_Expressjs_](https://expressjs.com) and [_fastify_](https://www.fastify.io) for building high performance APIs, colstonjs is completely built on bunjs.
+
 ## Prerequisite
 🐎 *Bun* - Bun needs to be installed locally on your development machine.
 
@@ -42,7 +46,11 @@ Bun supports ~90% of the native nodejs APIs including `fs`, `path`etc and also d
 
 💻  To install bun head over to the [offical website](https://bun.sh) and follow the installation instructions.
 
-🧑‍💻  To install coltson run `bun add colstonjs`
+🧑‍💻  To install coltsonjs run 
+
+```bash
+$ bun add colstonjs
+```
 #### _NOTE_
 _Although colstonjs is distributed under npm, colstonjs is only available for bun, node and deno are not currently supported._
 
@@ -66,9 +74,10 @@ const app: Colston = new Colston(serverOptions);
 A simple get request
 
 ```typescript
+// server.ts
 ...
 app.get("/", function(ctx) {
-  return ctx.status(200).text("OK");
+  return ctx.status(200).text("OK"); // OK
 });
 ...
 ```
@@ -79,6 +88,8 @@ port and/or callback function.
 This will start an `http` sever on the listening on all interfaces (`0.0.0.0`) listening on the specified port.
 
 ```typescript
+// server.ts
+...
 server.start(port?, cb?);
 ```
 
@@ -103,6 +114,7 @@ app.get("/", (ctx: Context) => {
   return ctx.status(200).json({ message: "Hello World!" });
 });
 
+// start the server 
 app.start(app.get('port'), () => console.log(`server listening on port ${app.get("port")}`));
 ```
 
@@ -137,7 +149,7 @@ app.get("/user/:id/name/:name", async (ctx: Context) => {
   const user = ctx.request.params;
 
   // make an api call to a backend datastore a to retrieve usre details
-  const userDetails = await getUserDetails(details.id);
+  const userDetails = await getUserDetails(details.id); // e.g: { id: 12345, name: "jane"}
 
   return ctx.status(200).json({ user: userDetails});
 });
@@ -156,7 +168,7 @@ const app: Colston = new Colston({ env: "development" });
 app.get('/?name&age', async (ctx: Context) => {
   const query = ctx.request.query;
 
-  return ctx.status(200).json(query);
+  return ctx.status(200).json(query); // { name: "jane", age: 50 }
 });
 
 app.start(8000);
@@ -232,7 +244,7 @@ app.get("/", middleware-1, middleware-2, middleware-3, ..., middleware-k, (ctx: 
 ...
 ```
 
-## Application Instance Cache
+## Application instance cache
 We can cache simple data which will leave throughout the application instance lifecycle.
 
 ```typescript
@@ -255,6 +267,7 @@ app.get("name"); // jane doe
 app.start(8000);
 ```
 ## Error handler
+Errors are handled internally by colstonjs, however this `error handler method` can aslo be customised.
 ```typescript
 // index.ts
 import Colston, { type Context } from "colstonjs";
@@ -266,22 +279,30 @@ app.get("/error", (ctx) => {
   throw new Error("This is a broken route");
 });
 
-// Custom 404 not found handler
+// Custom error handler
 app.error = async function (error) {
   console.error("This is an error...");
   return Response.json(JSON.stringify(
-    new Error(error.message || "An error occurred", error)
+    // return custom error here
+    const err = JSON.stringify(error);
+    new Error(error.message || "An error occurred" + err);
   ), { status: 500 });
 }
 
 app.start(8000);
 ```
-## Contribute 🧑‍💻 
-PRs for features, enhancements and bug fixes are welcomed. ✨ 
+## Contribute
+PRs for features, enhancements and bug fixes are welcomed. ✨ You can also look at the [todo](todo.md) file for feature contributions. 🙏🏽
 
-## License 🔐
+## License
 
-[MIT](LICENSE.md)
+This software is distributed under the [MIT](LICENSE.md) license.
 
-### NOTE
-Although this version is fairly stable, it might contain some bugs and not adviced to be used in a production environment yet.
+## Todo
+See the TODO doc [here](todo.md), feel free to also add to the list by editing the [TODO](todo.md) file.
+
+## Author
+Coded with 💙 by [Chukwuemeka Ajima](https://github.com/ajimae) 
+
+## Note
+Although this version is fairly stable, it is actively still under development so also is [bunjs](https://bun.sh) and might contain some bugs. Hence, not recommended to be used in a production environment yet.

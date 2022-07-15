@@ -5,7 +5,7 @@ function parse(url: string): string {
   const delimiters: Array<string> = [":", "?", "&"];
   for (i = 0; i < url.length; i++) {
     const c = url.charAt(i);
-    isQuery = url.charAt(i) == "&";
+    isQuery = url.charAt(i) === "&" || url.charAt(i) === "?";
     if (delimiters.indexOf(c) > -1) {
       // eat all characters
       let param = "";
@@ -16,7 +16,12 @@ function parse(url: string): string {
           break;
         }
       }
-      str += `(?<${param}>\\w+)`;
+
+      if (isQuery) {
+        str += `([?&]${param}=([^&]+))`;
+      } else {
+        str += `(?<${param}>\\w+)`;
+      }
       i = j - 1;
 
     } else {
@@ -26,15 +31,15 @@ function parse(url: string): string {
 
   /** 
    * TODO:
-   * fix issue with route not matching exact value 
-   * pops the "$" used to match end of pathname
+   * fix issue with route not matching exact value
   */
   if (isQuery) {
     return str;
   }
 
   // add end border to query string
-  return str + "$";
+  str += "$";
+  return str
 }
 
 export default parse;

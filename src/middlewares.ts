@@ -3,7 +3,7 @@ import type { Middleware } from "./colston.d";
 export default async function compose<T>(context: T, middlewares: Array<Middleware<T>>) {
   let prevIndex: number = -1;
 
-  async function runner(index: number) {
+  async function runner(index: number): Promise<void> {
     if (index === prevIndex) {
       throw new Error('next() called multiple times')
     }
