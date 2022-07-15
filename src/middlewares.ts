@@ -1,4 +1,4 @@
-import type { Middleware } from "./colston.d";
+import type { Middleware } from "./types.d";
 
 export default async function compose<T>(context: T, middlewares: Array<Middleware<T>>) {
   let prevIndex: number = -1;

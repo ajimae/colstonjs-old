@@ -1,12 +1,12 @@
 import Context from "./context";
 import { methods } from "./methods";
-import type { Middleware } from "./colston.d";
+import type { MethodType, Middleware } from "./types.d";
 
-export default function register(path: string, method: string, callback: Array<Middleware<Context>>, routeTable: object = {}): void | never {
+export default function register(path: string, method: MethodType, callback: Array<Middleware<Context>>, routeTable: object = {}): void | never {
   routeTable[path] = validate(path, method, callback);
 }
 
-function validate(path: string, method: string, callback: Array<Middleware<Context>>): { [path: string]: Array<Middleware<Context>> } {
+function validate(path: string, method: MethodType, callback: Array<Middleware<Context>>): { [path: string]: Array<Middleware<Context>> } {
   if (methods.indexOf(method) === -1) throw new Error("Invalid HTTP method, Accepted methods are: " + methods.join(" "));
   if (path.charAt(0) !== "/") throw new Error("Invalid path, path must start with '/'");
 

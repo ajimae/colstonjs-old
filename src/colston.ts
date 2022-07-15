@@ -1,5 +1,5 @@
 import { Errorlike, Serve, Server } from "bun";
-import type { Middleware, Options, IColston} from "./colston.d";
+import type { Middleware, Options, IColston } from "./types.d";
 import parse from "./params";
 import queryParse from "./query";
 import readBody from "./body";
@@ -34,8 +34,9 @@ export default class Colston implements IColston {
    */
   public error(error: Errorlike): Response | undefined | Promise<Response | undefined> {
     console.error(error);
+    const err = JSON.stringify(error);
     return new Response(JSON.stringify(
-      new Error(error.message || "An error occurred", error)
+      new Error(error.message || "An error occurred\n\r" + err)
     ), { status: 500 });
   }
 
@@ -127,7 +128,7 @@ export default class Colston implements IColston {
    * @param {Request} request bun request object
    * @returns {Response} bun response object
    */
-  async fetch(request: Request): Promise<Response> {
+  async fetch(request: Request): Promise<Response | void> {
     const context = new Context(request);
     /**
      * invoke all app level middlewares

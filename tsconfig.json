@@ -1,16 +1,18 @@
 {
   "compilerOptions": {
+    "declaration": true,
     "lib": ["ESNext"],
-    "module": "esnext",
-    "target": "esnext",
-    // "bun-types" is the important part
+    "module": "CommonJS",
     "moduleResolution": "node",
-    "types": ["bun-types"],
+    "noEmitOnError": true,
+    "noImplicitReturns": true,
+    "outDir": "dist",
     "baseUrl": ".",
-    "paths": {
-      "colston": [
-        "src/colston.ts"
-      ]
-    }
-  }
+    "skipLibCheck": true,
+    "sourceMap": false,
+    "target": "es2018",
+    "types": ["bun-types"]
+  },
+  // "include": ["src/**/*.ts"]
+  "exclude": ["examples"]
 }

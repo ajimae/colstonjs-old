@@ -5,7 +5,7 @@ on:
 
 jobs:
   publish:
-    name: publish
+    name: publish colstonjs
 
     runs-on: ubuntu-latest
     steps:
@@ -17,8 +17,10 @@ jobs:
           node-version: 12
           registry-url: https://registry.npmjs.org
 
+      - name: install bun
+        run: curl https://bun.sh/install | bash
       - name: install dependencies
-        run: npm install --save-exact
+        run: bun install
       # - name: run test suites
       #   run: npm test
 

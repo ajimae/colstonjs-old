@@ -1,7 +1,7 @@
-import { MethodType } from "./types.d";
-
-export const methods: Array<MethodType> =
-  [
+"use strict";
+exports.__esModule = true;
+exports.methods = void 0;
+exports.methods = [
     "GET",
     "HEAD",
     "POST",
@@ -11,4 +11,4 @@ export const methods: Array<MethodType> =
     "OPTIONS",
     "TRACE",
     "PATCH",
-  ];
+];

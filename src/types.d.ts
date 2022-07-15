@@ -25,24 +25,6 @@ export type MethodType =
     | 'TRACE'
 
 export declare type Context = _Context;
-export interface IColston {
-    readonly options: Options;
-    readonly routeTable: object;
-    readonly middleware: Array<Function>;
-    readonly cache: Map<string, any>;
-    use(...cb: Array<(ctx: Context) => Response | Promise<Response> | void>): void;
-    error(error: Errorlike): Response | undefined | Promise<Response | undefined>;
-    set(key: string, value: any): void;
-    get(key: string): number
-    get(path: string): string;
-    get(path: string, ...cb: Array<Middleware<Context>>): Response | Colston;
-    post(path: string, ...cb: Array<Middleware<Context>>): Colston;
-    patch(path: string, ...cb: Array<Middleware<Context>>): Colston;
-    put(path: string, ...cb: Array<Middleware<Context>>): Colston;
-    delete(path: string, ...cb: Array<Middleware<Context>>): Colston;
-    fetch(request: Request): Promise<Response>;
-    start(port?: number, cb?: Function): Server;
-}
 export declare type Next = () => Promise<void> | void;
 export declare type Middleware<T> = (context: T, next?: Next) => Response | void | Promise<Response | void>;
 /**
@@ -51,16 +33,12 @@ export declare type Middleware<T> = (context: T, next?: Next) => Response | void
  * @method use
  * @method fetch
  */
-export default class Colston implements IColston {
+export interface IColston {
     readonly options: Options;
     readonly routeTable: object;
     readonly middleware: Array<Function>;
     readonly cache: Map<string, any>;
-    /**
-     * @description overloaded constructor
-     * @param {object} options
-     */
-    constructor(options?: Options);
+    
     /**
      * @description internal error handler
      * @param error
@@ -124,7 +102,7 @@ export default class Colston implements IColston {
      * @param {Request} request bun request object
      * @returns {Response} bun response object
      */
-    fetch(request: Request): Promise<Response>;
+    fetch(request: Request): Promise<Response | void>;
     /**
      * @description bun http server entry point
      * @returns bun server instance

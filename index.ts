@@ -5,4 +5,4 @@ export type {
   Next,
   Context,
   Middleware
-} from "./src/colston.d";
+} from "./src/types.d";
