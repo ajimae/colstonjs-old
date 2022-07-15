@@ -3,7 +3,7 @@
 Fast, lightweight and zero dependency framework for [bunjs](https://bun.sh) 🚀
 
 ![npm](https://img.shields.io/npm/v/colstonjs?color=blue&style=plastic)
-![NPM](https://img.shields.io/npm/l/colstonjs?style=plastic)
+![GitHub](https://img.shields.io/github/license/ajimae/colstonjs?style=plastic)
 ![npm](https://img.shields.io/npm/dt/colstonjs?style=plastic)
 
 ## Table of Contents
