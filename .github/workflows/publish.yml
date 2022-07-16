@@ -25,6 +25,8 @@ jobs:
         run: |
           echo home/runner/.bun/bin/bun >> $GITHUB_PATH
           echo $GITHUB_WORKSPACE
+
+          bun --help
       - name: install dependencies
         run: bun install
       - name: build package
