@@ -1,9 +1,5 @@
 import { Errorlike, Serve, Server } from "bun";
-<<<<<<< HEAD
 import type { Middleware, Options, IColston} from "./types.d";
-=======
-import type { Middleware, Options, IColston } from "./types.d";
->>>>>>> 779994755503dc52af6bace6d5724c082c50f5b7
 import parse from "./params";
 import queryParse from "./query";
 import readBody from "./body";
