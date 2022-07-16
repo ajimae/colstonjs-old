@@ -23,10 +23,11 @@ jobs:
       - name: setup bun PATH
         shell: bash
         run: |
-          echo export PATH=/home/runner/.bun/bin/bun >> $GITHUB_PATH
-          echo $PATH
+          echo PATH=/home/runner/.bun/bin/bun >> $GITHUB_PATH
+          echo $GITHUB_PATH
 
-          bun --help
+          # bun --help
+          /home/runner/.bun/bin/bun --help
       - name: install dependencies
         run: bun install
       - name: build package
