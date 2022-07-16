@@ -22,8 +22,10 @@ jobs:
       - name: setup bun PATH
         run: |
           export BUN_INSTALL="/home/runner/.bun"
-          echo PATH="$$GITHUB_WORKSPACE/.bun/bin:$PATH" >> $GITHUB_PATH
-          echo $GITHUB_WORKSPACE
+          echo PATH="$GITHUB_WORKSPACE/.bun/bin:$PATH" >> $GITHUB_PATH
+          echo "::::::::::::::::::::::::::::::::::::::::::::::::::::::
+          which bun
+          echo "::::::::::::::::::::::::::::::::::::::::::::::::::::::
       - name: install dependencies
         run: bun install
       - name: build package
