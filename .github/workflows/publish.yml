@@ -29,9 +29,9 @@ jobs:
           # bun --help
           /home/runner/.bun/bin/bun --help
       - name: install dependencies
-        run: bun install
+        run:  /home/runner/.bun/bin/bun  install
       - name: build package
-        run: bun run build
+        run:  /home/runner/.bun/bin/bun  run build
       # - name: run test suites
       #   run: npm test
 
