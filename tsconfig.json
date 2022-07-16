@@ -1,20 +1,3 @@
-// {
-//   "compilerOptions": {
-//     "declaration": true,
-//     "lib": ["ESNext"],
-//     "module": "ES2015",
-//     "moduleResolution": "node",
-//     "noEmitOnError": true,
-//     "noImplicitReturns": true,
-//     "outDir": "dist",
-//     "baseUrl": ".",
-//     "skipLibCheck": true,
-//     "sourceMap": false,
-//     "target": "es2018",
-//     "types": ["bun-types"]
-//   },
-//   "exclude": ["example"]
-// }
 {
   "compilerOptions": {
     "declaration": true,
