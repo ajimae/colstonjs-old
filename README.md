@@ -10,7 +10,7 @@ Fast, lightweight and zero dependency framework for [bunjs](https://bun.sh) 🚀
 
 - [Background](#background)
 - [Prerequisite](#prerequisite)
-- [Install](#install)
+- [Install](#installation)
 - [Usage](#usage)
   - [Examples](#examples)
       - [Hellow Bun](#hello-bun)
@@ -26,7 +26,7 @@ Fast, lightweight and zero dependency framework for [bunjs](https://bun.sh) 🚀
 - [Contribute](#contribute)
 - [License](#license)
 - [Author](#author)
-- [Note](#note)
+- [Note](#note:)
 
 ## Background
 
@@ -327,5 +327,5 @@ See the TODO doc [here](todo.md), feel free to also add to the list by editing t
 ## Author
 Coded with 💙 by [Chukwuemeka Ajima](https://github.com/ajimae) 
 
-## Note
-Although this version is fairly stable, it is actively still under development so also is [bunjs](https://bun.sh) and might contain some bugs. Hence, not recommended to be used in a production environment yet.
+## Note:
+Although this version is fairly stable, it is actively still under development so also is [bunjs](https://bun.sh) and might contain some bugs, hence, not ideal for a production app.

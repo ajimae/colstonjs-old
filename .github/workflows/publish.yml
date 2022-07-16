@@ -17,6 +17,7 @@ jobs:
           node-version: 12
           registry-url: https://registry.npmjs.org
 
+      # install bun binaries
       - name: install bun
         shell: bash
         run: curl https://bun.sh/install | bash
@@ -27,7 +28,7 @@ jobs:
       - name: install dependencies
         run:  /home/runner/.bun/bin/bun install
       - name: build package
-        run:  /home/runner/.bun/bin/bun  run build
+        run:  /home/runner/.bun/bin/bun run build
       # - name: run test suites
       #   run: npm test
 
