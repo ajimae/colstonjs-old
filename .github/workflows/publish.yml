@@ -18,21 +18,14 @@ jobs:
           registry-url: https://registry.npmjs.org
 
       - name: install bun
-        uses: supplypike/setup-bin@v1
-        with:
-          uri: "https://bun.sh/install"
-          name: "bun"
-          version: "v0.1.4"
-          command: sudo ./bun/install
-
-      #   run: curl https://bun.sh/install | bash
-      # - name: setup bun PATH
-      #   run: |
-      #     export BUN_INSTALL="/home/runner/.bun"
-      #     echo PATH="$GITHUB_WORKSPACE/.bun/bin:$PATH" >> $GITHUB_PATH
-      #     echo "::::::::::::::::::::::::::::::::::::::::::::::::::::::
-      #     which bun
-      #     echo "::::::::::::::::::::::::::::::::::::::::::::::::::::::
+        run: curl https://bun.sh/install | bash
+      - name: setup bun PATH
+        run: |
+          export BUN_INSTALL="/home/runner/.bun"
+          echo PATH="$GITHUB_WORKSPACE/.bun/bin:$PATH" >> $GITHUB_PATH
+          echo "::::::::::::::::::::::::::::::::::::::::::::::::::::::
+          bun
+          echo "::::::::::::::::::::::::::::::::::::::::::::::::::::::
       - name: install dependencies
         run: bun install
       - name: build package
