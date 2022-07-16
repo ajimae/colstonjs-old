@@ -22,22 +22,14 @@ jobs:
         run: curl https://bun.sh/install | bash
       - name: setup bun PATH
         shell: bash
-        run: |
-          echo PATH=/home/runner/.bun/bin/bun >> $GITHUB_PATH
-          echo $GITHUB_PATH
+        run: echo PATH=/home/runner/.bun/bin/bun >> $GITHUB_PATH
 
-          # bun --help
-          /home/runner/.bun/bin/bun --help
       - name: install dependencies
-        run:  /home/runner/.bun/bin/bun  install
+        run:  /home/runner/.bun/bin/bun install
       - name: build package
         run:  /home/runner/.bun/bin/bun  run build
       # - name: run test suites
       #   run: npm test
-
-  #        export BUN_INSTALL="/home/runner/.bun"
-          # echo PATH="$GITHUB_WORKSPACE/.bun/bin:$PATH" >> $GITHUB_PATH
-  #  export PATH="$BUN_INSTALL/bin:$PATH"
 
       - name: publish
         run: npm publish --access=public
