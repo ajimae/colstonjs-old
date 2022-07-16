@@ -21,11 +21,14 @@ jobs:
         run: curl https://bun.sh/install | bash
       - name: setup bun PATH
         run: |
-          export BUN_INSTALL="/home/runner/.bun"
-          echo PATH="$GITHUB_WORKSPACE/.bun/bin:$PATH" >> $GITHUB_PATH
-          echo "::::::::::::::::::::::::::::::::::::::::::::::::::::::
-          bun
-          echo "::::::::::::::::::::::::::::::::::::::::::::::::::::::
+           echo "home/runner/.bun/bin/bun" >> $GITHUB_PATH
+          # echo PATH="$GITHUB_WORKSPACE/.bun/bin:$PATH" >> $GITHUB_PATH
+
+          echo "::::::::::::::::::::::::::::::::::::::::::::::::::::::"
+          which bun
+          echo $GITHUB_WORKSPACE
+          ehoc ${{github.workspace}}
+          echo "::::::::::::::::::::::::::::::::::::::::::::::::::::::"
       - name: install dependencies
         run: bun install
       - name: build package
