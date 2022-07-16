@@ -1,16 +1,32 @@
+// {
+//   "compilerOptions": {
+//     "declaration": true,
+//     "lib": ["ESNext"],
+//     "module": "ES2015",
+//     "moduleResolution": "node",
+//     "noEmitOnError": true,
+//     "noImplicitReturns": true,
+//     "outDir": "dist",
+//     "baseUrl": ".",
+//     "skipLibCheck": true,
+//     "sourceMap": false,
+//     "target": "es2018",
+//     "types": ["bun-types"]
+//   },
+//   "exclude": ["example"]
+// }
 {
   "compilerOptions": {
+    "declaration": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
     "lib": ["ESNext"],
-    "module": "esnext",
-    "target": "esnext",
-    // "bun-types" is the important part
+    "module": "ES2015",
     "moduleResolution": "node",
+    "removeComments": false,
+    "resolveJsonModule": true,
     "types": ["bun-types"],
-    "baseUrl": ".",
-    "paths": {
-      "colston": [
-        "src/colston.ts"
-      ]
-    }
-  }
+    "outDir": "dist"
+  },
+  "exclude": ["example"]
 }

@@ -1,5 +1,5 @@
 import { Errorlike, Serve, Server } from "bun";
-import type { Middleware, Options, IColston} from "./colston.d";
+import type { Middleware, Options, IColston} from "./types.d";
 import parse from "./params";
 import queryParse from "./query";
 import readBody from "./body";
@@ -8,7 +8,7 @@ import routeRegister from "./routeRegister";
 import compose from "./middlewares";
 
 /**
- * @class Jade
+ * @class Colston
  * @description add route to routeTable, match and process request
  * @method use
  * @method fetch
@@ -34,8 +34,9 @@ export default class Colston implements IColston {
    */
   public error(error: Errorlike): Response | undefined | Promise<Response | undefined> {
     console.error(error);
+    const err = JSON.stringify(error);
     return new Response(JSON.stringify(
-      new Error(error.message || "An error occurred", error)
+      new Error(error.message || "An error occurred\n\r" + err)
     ), { status: 500 });
   }
 
@@ -64,8 +65,8 @@ export default class Colston implements IColston {
    */
   public get(key: string): number
   public get(key: string): string;
-  public get(path: string, ...cb: Array<Middleware<Context>>): Colston;
-  public get(path: string, ...cb: Array<Middleware<Context>>): any {
+  public get(path: string, ...cb: Array<Middleware>): Colston;
+  public get(path: string, ...cb: Array<Middleware>): any {
     if (!cb.length)
       return this.cache.get(path);
     routeRegister(path, "GET", cb, this.routeTable);
@@ -78,7 +79,7 @@ export default class Colston implements IColston {
    * @param cb 
    * @returns {this} 
    */
-  public post(path: string, ...cb: Array<Middleware<Context>>): Colston {
+  public post(path: string, ...cb: Array<Middleware>): Colston {
     routeRegister(path, "POST", cb, this.routeTable);
     return this;
   }
@@ -89,7 +90,7 @@ export default class Colston implements IColston {
    * @param cb 
    * @returns {this} 
    */
-  public patch(path: string, ...cb: Array<Middleware<Context>>): Colston {
+  public patch(path: string, ...cb: Array<Middleware>): Colston {
     routeRegister(path, "PATCH", cb, this.routeTable);
     return this;
   }
@@ -100,7 +101,7 @@ export default class Colston implements IColston {
    * @param cb 
    * @returns {this} 
    */
-  public put(path: string, ...cb: Array<Middleware<Context>>): Colston {
+  public put(path: string, ...cb: Array<Middleware>): Colston {
     routeRegister(path, "PUT", cb, this.routeTable);
     return this;
   }
@@ -108,7 +109,7 @@ export default class Colston implements IColston {
   /**
    *
    */
-  public delete(path: string, ...cb: Array<Middleware<Context>>): Colston {
+  public delete(path: string, ...cb: Array<Middleware>): Colston {
     routeRegister(path, "DELETE", cb, this.routeTable)
     return this;
   }
@@ -127,6 +128,7 @@ export default class Colston implements IColston {
    * @param {Request} request bun request object
    * @returns {Response} bun response object
    */
+  // @ts-ignore
   async fetch(request: Request): Promise<Response> {
     const context = new Context(request);
     /**

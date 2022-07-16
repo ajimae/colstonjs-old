@@ -1,4 +1,4 @@
-import { MethodType } from "./colston";
+import { MethodType } from "./types.d";
 
 export const methods: Array<MethodType> =
   [

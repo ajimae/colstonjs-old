@@ -5,13 +5,12 @@
     "bun-types": "^0.1.2"
   },
   "files": [
-    "src/*",
-    "index.ts",
+    "dist/*",
     "package.json",
     "README.md",
     "bun.lockb",
     "tsconfig.json",
-    "LICENSE.md"
+    "LICENSE"
   ],
   "keywords": [
     "bun",
@@ -25,12 +24,17 @@
     "framework"
   ],
   "description": "fast, lightweight and zero dependency framework for bunjs",
-  "main": "index.ts",
+  "main": "dist/index.js",
   "repository": "https://github.com/ajimae/colston.git",
   "author": "Chukwuemeka Ajima <meeky.ae@gmail.com>",
   "license": "MIT",
   "private": false,
   "devDependencies": {
     "@types/node": "^18.0.3"
+  },
+  "scripts": {
+    "build": "rm -rf dist/ && tsc",
+    "postbuild": "chmod +x clean-dist && sh ./clean-dist",
+    "clean": "rsync -r -q -i --remove-source-files --include './dist/src/*.d.ts' --exclude '*.js' --prune-empty-dirs --delete-after dist/src dist/declarations/"
   }
 }

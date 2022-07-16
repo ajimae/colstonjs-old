@@ -1,6 +1,6 @@
-import type { Middleware } from "./colston.d";
+import type { Middleware, Context } from "./types.d";
 
-export default async function compose<T>(context: T, middlewares: Array<Middleware<T>>) {
+export default async function compose(context: Context, middlewares: Array<Middleware>) {
   let prevIndex: number = -1;
 
   async function runner(index: number): Promise<void> {

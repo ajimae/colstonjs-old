@@ -17,6 +17,7 @@ Fast, lightweight and zero dependency framework for [bunjs](https://bun.sh) 🚀
       - [Read request body as json or text](#read-request-body-as-json-or-text)
       - [Using named parameters](#using-named-parameters)
       - [Using query parameters](#using-query-parameters)
+      - [Method Chaining](#method-chaining)
   - [Middleware](#middleware)
     - [Application-Level Middleware](#application-level-middleware)
     - [Route-Level Middleware](#route-level-middleware)
@@ -174,6 +175,28 @@ app.get('/?name&age', async (ctx: Context) => {
 app.start(8000);
 ```
 
+#### Method chaining
+Colstonjs also provide the flexibility of method chaining, create one app instance and chain all methods on that single instance.
+```typescript
+// server.ts
+import Colston, { type Context } from "colstonjs";
+
+const app: Colston = new Colston({ env: "development" });
+
+app
+  .get("/one", (ctx: Context) => {
+      return ctx.status(200).text("One");
+  })
+  .post("/two", (ctx: Context) => {
+      return ctx.status(200).text("Two");
+  })
+  .patch("/three", (ctx: Context) => {
+      return ctx.status(200).text("Three");
+  });
+
+app.start(8000);
+```
+
 ### Middleware  
 
 Colstonjs support both `route` level middleware as well as `app` level middleware.
@@ -183,7 +206,7 @@ This is a middleware which will be called on each request made to the server, on
 ```typescript
 // logger.ts
 export function logger(ctx) {
-  const { host, pathname } = new URL(ctx.request.url);
+  const { pathname } = new URL(ctx.request.url);
   console.info([new Date()], " - - " + ctx.request.method + " " + pathname + " HTTP 1.1" + " - ");
 }
 
@@ -194,7 +217,7 @@ import { logger } from "./logger";
 const app: Colston = new Colston({ env: "development" });
 
 // middleware
-app.use(logger);
+app.use(logger); // [2022-07-16T01:01:00.327Z] - - GET / HTTP 1.1 - 
 
 app.get("/", (ctx: Context) => {
   return ctx.status(200).text("Hello logs...");
@@ -227,7 +250,7 @@ import { requestID } from "./request-id";
 const app: Colston = new Colston({ env: "development" });
 
 app.get("/", requestID, (ctx: Context) => {
-  return ctx.status(200).text(`id: ${ctx.request.id}`);
+  return ctx.status(200).text(`id: ${ctx.request.id}`); // id: 410796b6d64e3dcc1802f290dc2f32155c5b
 });
 
 app.start(8000);
