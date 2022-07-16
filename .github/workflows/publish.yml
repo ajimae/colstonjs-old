@@ -23,12 +23,8 @@ jobs:
       - name: setup bun PATH
         shell: bash
         run: |
-          echo "home/runner/.bun/bin/bun" >> $GITHUB_PATH
-          echo "::::::::::::::::::::::::::::::::::::::::::::::::::::::"
-          which bun
+          echo home/runner/.bun/bin/bun >> $GITHUB_PATH
           echo $GITHUB_WORKSPACE
-          echo "${{github.workspace}}"
-          echo "::::::::::::::::::::::::::::::::::::::::::::::::::::::"
       - name: install dependencies
         run: bun install
       - name: build package
