@@ -18,7 +18,6 @@ jobs:
           registry-url: https://registry.npmjs.org
 
       - name: install bun
-        uses: actions/checkout@v3
         uses: supplypike/setup-bin@v1
         with:
           uri: "https://bun.sh/install"
