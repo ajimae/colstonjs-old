@@ -1,13 +1,9 @@
 {
   "name": "colstonjs",
   "version": "0.1.0",
-  "author": "Chukwuemeka Ajima <meeky.ae@gmail.com>",
-  "repository": "https://github.com/ajimae/colston.git",
-  "main": "dist/index.js",
   "dependencies": {
     "bun-types": "^0.1.4"
   },
-  "description": "fast, lightweight and zero dependency framework for bunjs",
   "files": [
     "dist/*",
     "package.json",
@@ -29,7 +25,7 @@
   ],
   "description": "fast, lightweight and zero dependency framework for bunjs",
   "main": "dist/index.js",
-  "repository": "https://github.com/ajimae/colston.git",
+  "repository": "https://github.com/ajimae/colstonjs.git",
   "author": "Chukwuemeka Ajima <meeky.ae@gmail.com>",
   "license": "MIT",
   "private": false,

@@ -20,9 +20,11 @@ jobs:
       - name: install bun
         run: curl https://bun.sh/install | bash
       - name: setup bun PATH
-        run: echo PATH="${HOME}/bin:$PATH" >> $GITHUB_PATH
+        run: echo PATH="${HOME}/.bun/bin:$PATH" >> $GITHUB_PATH
       - name: install dependencies
         run: bun install
+      - name: build package
+        run: bun run build
       # - name: run test suites
       #   run: npm test
 
